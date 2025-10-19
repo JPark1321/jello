@@ -1,5 +1,7 @@
 import Resolver from '@forge/resolver';
 
+import { downloadFilesSequentially } from './download';
+
 const resolver = new Resolver();
 
 resolver.define('getText', (req) => {
