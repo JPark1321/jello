@@ -1,0 +1,1 @@
+export const GPT_4o_MINI = "gpt-4o-mini"
