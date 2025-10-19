@@ -7,9 +7,19 @@ modules:
       render: native
       title: Mello-Dubhacks
       icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+  jira:issueAction:
+    - key: mello-action
+      title: "AI Fix Issue"
+      description: "Click to trigger the Mello Action"
+      resource: main
+      render: native
+      resolver:
+        function: buttonResolver
   function:
     - key: resolver
       handler: index.handler
+    - key: buttonResolver
+      handler: index.buttonHandler
 resources:
   - key: main
     path: src/frontend/index.jsx
