@@ -2,7 +2,6 @@ import 'dotenv/config';
 import axios from 'axios';
 import FormData from 'form-data';
 
-// Updated: Use BB_ACCESS_TOKEN instead of BB_USER and BB_APP_PASSWORD
 const {
   BB_ACCESS_TOKEN, // Your Bearer Token
   WORKSPACE, REPO_SLUG,
@@ -72,6 +71,18 @@ async function commitFile(branch, path, content, message) {
   // Need to pass the form headers (Content-Type: multipart/form-data with boundary) to axios
   await api.post('/src', form, { headers: form.getHeaders() });
   console.log('📝 File committed to', branch);
+}
+
+async function deleteFile(branch, path, message) {
+  const form = new FormData();
+  form.append('branch', branch);
+  form.append('message', message);
+  // Crucial: Use the special key '_file_to_delete' with the path as its value.
+  form.append('_file_to_delete', path); 
+  
+  // Send the POST request to the /src endpoint
+  await api.post('/src', form, { headers: form.getHeaders() });
+  console.log(`🗑️ File deleted: ${path} from ${branch}`);
 }
 
 async function createPR(title, desc, src, dest) {
