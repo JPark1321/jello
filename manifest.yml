@@ -29,3 +29,8 @@ app:
     memoryMB: 256
     architecture: arm64
   id: ari:cloud:ecosystem::app/240d9cc4-c359-42dc-b2c3-b8651e1f7b76
+permissions:
+  external:
+    fetch:
+      backend:
+        - api.openai.com

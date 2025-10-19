@@ -14,12 +14,14 @@ const App = () => {
       setContext(ctx.extension.type); // 'jira:issuePanel' or 'jira:issueAction'
     });
 
-    // Load text for the issuePanel version
+    // Load default text for issuePanel
     invoke('getText', { example: 'my-invoke-variable' }).then(setData);
   }, []);
 
   const handleClick = async () => {
-    await invoke('onButtonClick'); // backend function
+    const userPrompt = "Tell me all letters of the alphabet" // replace with retrived BitBucket code
+    const reply = await invoke('onButtonClick', { prompt: userPrompt }); // call backend + get GPT reply
+    setData(reply); // store generated text
     setClicked(true);
   };
 
@@ -27,10 +29,15 @@ const App = () => {
     // When opened from the top-right “Run AI Fix”
     return (
       <Stack space="medium" align="start">
-        <Text>⚡ AI Fix Triggered!</Text>
-        <Text>This UI is shown when you click the issue action.</Text>
+        <Text>Fix this issue with AI</Text>
         <Button text="Run Backend Logic" onClick={handleClick} />
-        {clicked && <Text>✅ Action completed!</Text>}
+
+        {clicked && (
+          <>
+            <Text>ChatGPT says:</Text>
+            <Text>{data}</Text>
+          </>
+        )}
       </Stack>
     );
   }
@@ -40,8 +47,15 @@ const App = () => {
     <Stack space="medium" align="start">
       <Text>Hello world!!</Text>
       <Text>{data ? data : 'Loading...'}</Text>
+
       <Button text="Click Me" appearance="primary" onClick={handleClick} />
-      {clicked && <Text>✅ Button clicked!</Text>}
+
+      {clicked && (
+        <>
+          <Text>ChatGPT says:</Text>
+          <Text>{data}</Text>
+        </>
+      )}
     </Stack>
   );
 };
