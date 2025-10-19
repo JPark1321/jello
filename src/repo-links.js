@@ -1,8 +1,4 @@
-const ROOT_PATH = 'https://api.bitbucket.org/2.0/repositories/dubhacks/mello-dubhacks/src'
-
-const {
-  BB_ACCESS_TOKEN
-} = process.env
+const BB_ACCESS_TOKEN = process.env.BB_ACCESS_TOKEN
 
 export async function getRepoLinks(url) {
   const res = await fetch(url, { headers: { Authorization: `Bearer ${BB_ACCESS_TOKEN}` } });

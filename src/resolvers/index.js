@@ -1,56 +1,51 @@
 import Resolver from '@forge/resolver';
-import api from '@forge/api';
-import { GPT_4o_MINI } from '../models';
-
-import { downloadFilesSequentially } from './download';
+import { prompt } from '../chat';
+import { getRepoLinks } from '../repo-links';
+import { fetchAndReplace } from '../repo-links-to-text';
+import { buildPrompt } from '../build-prompt';
+import { createPullRequest } from '../create-pr';
 
 const resolver = new Resolver();
 
-resolver.define('getText', (req) => {
-  console.log(req);
-  return 'Hello, world!';
-});
+const ROOT_PATH = 'https://api.bitbucket.org/2.0/repositories/dubhacks/mello-dubhacks/src'
 
-const buttonResolver = new Resolver();
+resolver.define('getChat', async (req) => {
+  console.log(req?.payload);
 
-buttonResolver.define('onButtonClick', async (req) => {
-  console.log('Button clicked! Calling OpenAI...');
-
-  const key = process.env.OPENAI_API_KEY;
-  const userPrompt = req.payload?.prompt || "Say no prompt given";
-
-  if (!key) {
-    console.error('Missing OpenAI API key.');
-    return 'Error: No API key set. Run "forge variables set OPENAI_API_KEY <your-key>"';
-  }
+  const { issue_key } = req.payload
 
   try {
-    const response = await api.fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
+    const auth = Buffer.from(`jpark132@uw.edu:${process.env.JPARK}`).toString("base64");
+    const response = await fetch(`https://dubhacks.atlassian.net/rest/api/3/issue/${issue_key}`, {
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${key}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: GPT_4o_MINI, // cheapest model
-        messages: [
-          { role: 'system', content: 'You are a coding assistant running inside Jira.' },
-          { role: 'user', content: userPrompt }
-        ],
-        max_tokens: 50
-      })
-    });
+        "Authorization": `Basic ${auth}`,
+        "Accept": "application/json"
+      }
+    })
 
-    const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || 'No response';
-    return reply;
+    const issue_data = await response.json()
+    const summary = issue_data['fields']['summary']
+    const description = issue_data['fields']['description']['content'][0]['content'][0]['text']
 
-  } catch (error) {
-    console.error('Error calling OpenAI:', error);
-    return `Error: ${error.message}`;
+    const nested_links = await getRepoLinks(ROOT_PATH)
+    const json_code = await fetchAndReplace(nested_links)
+
+    const input = buildPrompt({
+      repositoryState: json_code,
+      jiraIssueKey: issue_key.toUpperCase(),
+      jiraIssueTitle: summary,
+      jiraIssueDescription: description
+    })
+    
+    const chat_string = await prompt(input);
+    const json = JSON.parse(chat_string)
+    const ret = await createPullRequest(json)
+
+    return `${json['branch_title']}`
+  } catch (e) {
+    return e.message
   }
 });
 
-
 export const handler = resolver.getDefinitions();
-export const buttonHandler = buttonResolver.getDefinitions();

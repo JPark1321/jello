@@ -1,17 +1,9 @@
-import 'dotenv/config';
 import axios from 'axios';
 import FormData from 'form-data';
 
-const {
-  BB_ACCESS_TOKEN, // Your Bearer Token
-  WORKSPACE, REPO_SLUG,
-  BASE_BRANCH = 'main',
-  NEW_BRANCH = `auto-change-${Date.now()}`,
-  FILE_PATH = 'src/auto.txt',
-  COMMIT_MESSAGE = 'Automated update',
-  PR_TITLE = 'Automated PR',
-  PR_DESCRIPTION = 'Created by script'
-} = process.env;
+const BB_ACCESS_TOKEN = process.env.BB_ACCESS_TOKEN
+const WORKSPACE = process.env.WORKSPACE
+const REPO_SLUG = process.env.REPO_SLUG
 
 // Updated: Check for BB_ACCESS_TOKEN
 if (!BB_ACCESS_TOKEN || !WORKSPACE || !REPO_SLUG) {
@@ -28,7 +20,7 @@ const api = axios.create({
   },
 });
 
-async function getBranchHash(branch) {
+export async function getBranchHash(branch) {
   // Ensure the branch name is URL-safe
   const branchName = encodeURIComponent(branch);
   

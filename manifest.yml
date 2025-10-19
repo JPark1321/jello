@@ -1,25 +1,15 @@
 modules:
-  jira:issuePanel:
-    - key: jello-hello-world-issue-panel
-      resource: main
-      resolver:
-        function: resolver
-      render: native
-      title: Mello-Dubhacks
-      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
   jira:issueAction:
     - key: mello-action
-      title: "AI Fix Issue"
-      description: "Click to trigger the Mello Action"
+      title: "AI Patch"
+      description: ""
       resource: main
       render: native
       resolver:
-        function: buttonResolver
+        function: resolver
   function:
     - key: resolver
       handler: index.handler
-    - key: buttonResolver
-      handler: index.buttonHandler
 resources:
   - key: main
     path: src/frontend/index.jsx
@@ -28,9 +18,11 @@ app:
     name: nodejs22.x
     memoryMB: 256
     architecture: arm64
-  id: ari:cloud:ecosystem::app/240d9cc4-c359-42dc-b2c3-b8651e1f7b76
+  id: ari:cloud:ecosystem::app/b12d47f2-014e-47ca-9f5e-17ed1642ef84
 permissions:
   external:
     fetch:
       backend:
         - api.openai.com
+        - dubhacks.atlassian.net
+        - api.bitbucket.org

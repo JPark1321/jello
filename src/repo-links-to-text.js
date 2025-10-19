@@ -1,6 +1,4 @@
-const {
-  BB_ACCESS_TOKEN
-} = process.env
+const BB_ACCESS_TOKEN = process.env.BB_ACCESS_TOKEN
 
 export async function fetchAndReplace(obj) {
   // Helper function to fetch file content safely
