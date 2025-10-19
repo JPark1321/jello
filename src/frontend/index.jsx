@@ -8,56 +8,38 @@ const App = () => {
   const [context, setContext] = useState('');
 
   useEffect(() => {
-    // Detect which module is being rendered
     view.getContext().then((ctx) => {
       console.log(ctx.extension.type);
-      setContext(ctx.extension.type); // 'jira:issuePanel' or 'jira:issueAction'
+      setContext(ctx.extension.type);
     });
-
-    // Load default text for issuePanel
-    invoke('getText', { example: 'my-invoke-variable' }).then(setData);
   }, []);
 
   const handleClick = async () => {
-    const userPrompt = "Tell me all letters of the alphabet" // replace with retrived BitBucket code
-    const reply = await invoke('onButtonClick', { prompt: userPrompt }); // call backend + get GPT reply
-    setData(reply); // store generated text
+    const userPrompt = "Tell me all letters of the alphabet";
+
     setClicked(true);
+    // // setData(null);
+
+    const reply = await invoke('onButtonClick', { prompt: userPrompt });
+    setData(reply);
   };
 
-  if (context === 'jira:issueAction') {
-    // When opened from the top-right “Run AI Fix”
-    return (
-      <Stack space="medium" align="start">
-        <Text>Fix this issue with AI</Text>
-        <Button text="Run Backend Logic" onClick={handleClick} />
 
-        {clicked && (
-          <>
-            <Text>ChatGPT says:</Text>
-            <Text>{data}</Text>
-          </>
-        )}
-      </Stack>
-    );
-  }
-
-  // Default view (inside issue panel)
   return (
     <Stack space="medium" align="start">
-      <Text>Hello world!!</Text>
-      <Text>{data ? data : 'Loading...'}</Text>
-
-      <Button text="Click Me" appearance="primary" onClick={handleClick} />
+      <Text>Fix this issue with AI</Text>
+      <Button text="Run Backend Logic" onClick={handleClick} />
 
       {clicked && (
         <>
           <Text>ChatGPT says:</Text>
-          <Text>{data}</Text>
+          <Text>{data ? data : "⏳ Loading chat..."}</Text>
         </>
       )}
     </Stack>
   );
+
+  return null;
 };
 
 ForgeReconciler.render(

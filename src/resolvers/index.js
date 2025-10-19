@@ -1,15 +1,6 @@
 import Resolver from '@forge/resolver';
 import api from '@forge/api';
-import { GPT_4o_MINI } from '../models';
-
-import { downloadFilesSequentially } from './download';
-
-const resolver = new Resolver();
-
-resolver.define('getText', (req) => {
-  console.log(req);
-  return 'Hello, world!';
-});
+import { GPT_4o_MINI, GPT_4o, GPT_4_TURBO, GPT_3_5_TURBO } from '../models';
 
 const buttonResolver = new Resolver();
 
@@ -32,7 +23,7 @@ buttonResolver.define('onButtonClick', async (req) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: GPT_4o_MINI, // cheapest model
+        model: GPT_4o, // cheapest model
         messages: [
           { role: 'system', content: 'You are a coding assistant running inside Jira.' },
           { role: 'user', content: userPrompt }
@@ -52,5 +43,4 @@ buttonResolver.define('onButtonClick', async (req) => {
 });
 
 
-export const handler = resolver.getDefinitions();
 export const buttonHandler = buttonResolver.getDefinitions();

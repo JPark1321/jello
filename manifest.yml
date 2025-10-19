@@ -1,12 +1,4 @@
 modules:
-  jira:issuePanel:
-    - key: jello-hello-world-issue-panel
-      resource: main
-      resolver:
-        function: resolver
-      render: native
-      title: Mello-Dubhacks
-      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
   jira:issueAction:
     - key: mello-action
       title: "AI Fix Issue"
@@ -16,8 +8,6 @@ modules:
       resolver:
         function: buttonResolver
   function:
-    - key: resolver
-      handler: index.handler
     - key: buttonResolver
       handler: index.buttonHandler
 resources:
