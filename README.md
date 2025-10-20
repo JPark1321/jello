@@ -1,39 +1,31 @@
-# Forge Hello World
+Merge 🚀
 
-This project contains a Forge app written in Javascript that displays `Hello World!` in a Jira issue panel. 
+What is Merge?
 
-See [developer.atlassian.com/platform/forge/](https://developer.atlassian.com/platform/forge) for documentation and tutorials explaining Forge.
+Merge is an “agentic AI in natural language for your Jira workflow”. 
+In short: it enables you to interact with your Jira issues using natural language, streamlining issue tracking and workflow.
 
-## Requirements
+Why we built it
 
-See [Set up Forge](https://developer.atlassian.com/platform/forge/set-up-forge/) for instructions to get set up.
+Problem: Developers spend a lot of time managing issues in Jira and translating them into actionable work.
 
-## Quick start
+Solution: Merge leverages AI to bridge the gap — letting you describe a task in normal language and automatically triggering the right change in your workflow.
 
-- Modify your app frontend by editing the `src/frontend/index.jsx` file.
+Goal: Provide a smarter, more intuitive interface for issue management and help teams move from planning to execution faster.
 
-- Modify your app backend by editing the `src/resolvers/index.js` file to define resolver functions. See [Forge resolvers](https://developer.atlassian.com/platform/forge/runtime-reference/custom-ui-resolver/) for documentation on resolver functions.
+Tech Stack
 
-- Build and deploy your app by running:
-```
-forge deploy
-```
+Front-end: JavaScript/React
 
-- Install your app in an Atlassian site by running:
-```
-forge install
-```
+Back-end: AI integration (natural language processing)
 
-- Develop your app by running `forge tunnel` to proxy invocations locally:
-```
-forge tunnel
-```
+APIs & Integration: Jira API, other workflow APIs
 
-### Notes
-- Use the `forge deploy` command when you want to persist code changes.
-- Use the `forge install` command when you want to install the app on a new site.
-- Once the app is installed on a site, the site picks up the new app changes you deploy without needing to rerun the install command.
 
-## Support
+Features
 
-See [Get help](https://developer.atlassian.com/platform/forge/get-help/) for how to get help and provide feedback.
+🧠 Natural-language interface for Jira issues
+
+🔄 Integration with Jira workflow — convert text into actionable changes
+
+✅ Designed for ease of use and speed
